@@ -30,9 +30,9 @@
 		   {unix,linux} ->
 		       case  erlang:system_info({wordsize, external}) of
 			   4 ->
-			       sqlserver;
+			       mysql;
 			   _ ->
-			       sqlserver
+			       postgres
 		       end;
 		   {unix, darwin} ->
 		       mysql;
