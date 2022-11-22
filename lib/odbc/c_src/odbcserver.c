@@ -1500,7 +1500,7 @@ static db_result_msg encode_row_count(SQLINTEGER num_of_rows,
 static void encode_column_dyn(db_column column, int column_nr,
                               db_state *state)
 {
-    log_info("encode_column_dyn %s", column.buffer)
+    log_info("encode_column_dyn %s", column.buffer);
     TIMESTAMP_STRUCT* ts;
     if (column.type.len == 0 ||
         column.type.strlen_or_indptr == SQL_NULL_DATA) {
