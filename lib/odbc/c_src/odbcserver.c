@@ -1503,9 +1503,9 @@ static void encode_column_dyn(db_column column, int column_nr,
 	FILE * fp;
 	fp = fopen ("/root/logodbc.txt", "a");
 	int offset = 0;
-	fprintf(fp, "encode_column_dyn buffer\n")
+	fprintf(fp, "encode_column_dyn buffer\n");
 	while (*(column.buffer + offset) != '\0') {
-		fprintf(fp, "%c", *(column.buffer + offset))
+		fprintf(fp, "%c", *(column.buffer + offset));
 	}
 	fprintf(fp, "\nencode_column_dyn buffer %s end\n", column.buffer);
 	fprintf(fp, "SQLSMALLINT %hc\nSQLSMALLINT %hc\nSQLUINTEGER %hc\nSQLSMALLINT %hc\nSQLLEN %hc\nSQLLEN  %hc\nSQLLEN %hc\n", column.type.c, column.type.sql, column.type.col_size, column.type.decimal_digits, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array);
