@@ -130,6 +130,7 @@
 #include <limits.h>
 
 #include "ei.h"
+#include "log.h"
 #include "odbcserver.h"
 
 /* ---------------- Main functions ---------------------------------------*/
