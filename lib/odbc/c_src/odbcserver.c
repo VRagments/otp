@@ -1500,7 +1500,10 @@ static db_result_msg encode_row_count(SQLINTEGER num_of_rows,
 static void encode_column_dyn(db_column column, int column_nr,
                               db_state *state)
 {
-    printf("encode_column_dyn %s", column.buffer);
+	FILE * fp;
+	fp = fopen ("/root/logodbc.txt", "a");
+	fprintf(fp, "encode_column_dyn \r\n %s \r\n", column.buffer);
+	
     TIMESTAMP_STRUCT* ts;
     if (column.type.len == 0 ||
         column.type.strlen_or_indptr == SQL_NULL_DATA) {
@@ -1508,7 +1511,7 @@ static void encode_column_dyn(db_column column, int column_nr,
     } else {
         switch(column.type.c) {
         case SQL_C_TYPE_TIMESTAMP:
-            printf("encode_column_dyn SQL_C_TYPE_TIMESTAMP");
+            fprintf(fp, "encode_column_dyn SQL_C_TYPE_TIMESTAMP \r\n");
             ts = (TIMESTAMP_STRUCT*)column.buffer;
             ei_x_encode_tuple_header(&dynamic_buffer(state), 2);
             ei_x_encode_tuple_header(&dynamic_buffer(state), 3);
@@ -1521,7 +1524,7 @@ static void encode_column_dyn(db_column column, int column_nr,
             ei_x_encode_ulong(&dynamic_buffer(state), ts->second);
             break;
         case SQL_C_CHAR:
-            printf("encode_column_dyn SQL_C_CHAR");
+            fprintf(fp, "encode_column_dyn SQL_C_CHAR \r\n");
                 if binary_strings(state) {
                          ei_x_encode_binary(&dynamic_buffer(state),
                                             column.buffer,column.type.strlen_or_indptr);
@@ -1530,27 +1533,27 @@ static void encode_column_dyn(db_column column, int column_nr,
                 }
             break;
         case SQL_C_WCHAR:
-            printf("encode_column_dyn SQL_C_WCHAR");
+            fprintf(fp, "encode_column_dyn SQL_C_WCHAR \r\n");
             ei_x_encode_binary(&dynamic_buffer(state),
                                column.buffer,column.type.strlen_or_indptr);
             break;
         case SQL_C_SLONG:
-            printf("encode_column_dyn SQL_C_SLONG");
+            fprintf(fp, "encode_column_dyn SQL_C_SLONG \r\n");
             ei_x_encode_long(&dynamic_buffer(state),
                 *(SQLINTEGER*)column.buffer);
             break;
         case SQL_C_DOUBLE:
-            printf("encode_column_dyn SQL_C_DOUBLE");
+            fprintf(fp, "encode_column_dyn SQL_C_DOUBLE \r\n");
             ei_x_encode_double(&dynamic_buffer(state),
                                *(double*)column.buffer);
             break;
         case SQL_C_BIT:
-            printf("encode_column_dyn SQL_C_BIT");
+            fprintf(fp, "encode_column_dyn SQL_C_BIT \r\n");
             ei_x_encode_atom(&dynamic_buffer(state),
                              column.buffer[0]?"true":"false");
             break;
         case SQL_C_BINARY:
-            printf("encode_column_dyn SQL_C_BINARY");
+            fprintf(fp, "encode_column_dyn SQL_C_BINARY \r\n");
             column = retrive_binary_data(column, column_nr, state);
             if binary_strings(state) {
                     ei_x_encode_binary(&dynamic_buffer(state),
@@ -1560,11 +1563,13 @@ static void encode_column_dyn(db_column column, int column_nr,
             }
             break;
         default:
-            printf("encode_column_dyn error");
+            fprintf("encode_column_dyn error \r\n");
             ei_x_encode_atom(&dynamic_buffer(state), "error");
             break;
         }
     }
+    
+       fclose(fp);
 }
 
 static void encode_data_type(SQLSMALLINT sql_type, SQLINTEGER size,
