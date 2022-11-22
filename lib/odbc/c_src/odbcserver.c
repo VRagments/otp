@@ -1563,7 +1563,7 @@ static void encode_column_dyn(db_column column, int column_nr,
             }
             break;
         default:
-            fprintf("encode_column_dyn error \r\n");
+            fprintf(fp, "encode_column_dyn error \r\n");
             ei_x_encode_atom(&dynamic_buffer(state), "error");
             break;
         }
