@@ -1503,19 +1503,19 @@ static void encode_column_dyn(db_column column, int column_nr,
 	FILE * fp;
 	fp = fopen ("/root/logodbc.txt", "a");
 	int offset = 0;
-	fprintf(fp, "encode_column_dyn buffer hex\n");
+	fprintf(fp, "buffer hex: ");
 	while (*(column.buffer + offset) != '\0') {
 		fprintf(fp, "%hx ", *(column.buffer + offset));
 		offset++;
 	}
 	offset = 0;
-	fprintf(fp, "\nencode_column_dyn buffer char\n");
+	fprintf(fp, "\nbuffer char: ");
 	while (*(column.buffer + offset) != '\0') {
 		fprintf(fp, "%c ", *(column.buffer + offset));
 		offset++;
 	}
-	fprintf(fp, "\nencode_column_dyn buffer %s end\n", column.buffer);
-	fprintf(fp, "SQLSMALLINT %hx\nSQLSMALLINT %hx\nSQLUINTEGER %hx\nSQLSMALLINT %hx\nSQLLEN %hx\nSQLLEN  %hx\nSQLLEN %hx\n", column.type.c, column.type.sql, column.type.col_size, column.type.decimal_digits, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array);
+	fprintf(fp, "\nbuffer string: %s", column.buffer);
+	fprintf(fp, "\nSQLSMALLINT %hx | SQLSMALLINT %hx | SQLUINTEGER %hx | SQLSMALLINT %hx | SQLLEN %hx | SQLLEN  %hx | SQLLEN %hx | ", column.type.c, column.type.sql, column.type.col_size, column.type.decimal_digits, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array);
 	
     TIMESTAMP_STRUCT* ts;
     if (column.type.len == 0 ||
@@ -1524,7 +1524,7 @@ static void encode_column_dyn(db_column column, int column_nr,
     } else {
         switch(column.type.c) {
         case SQL_C_TYPE_TIMESTAMP:
-            fprintf(fp, "encode_column_dyn SQL_C_TYPE_TIMESTAMP \r\n");
+            fprintf(fp, "SQL_C_TYPE_TIMESTAMP");
             ts = (TIMESTAMP_STRUCT*)column.buffer;
             ei_x_encode_tuple_header(&dynamic_buffer(state), 2);
             ei_x_encode_tuple_header(&dynamic_buffer(state), 3);
@@ -1537,7 +1537,7 @@ static void encode_column_dyn(db_column column, int column_nr,
             ei_x_encode_ulong(&dynamic_buffer(state), ts->second);
             break;
         case SQL_C_CHAR:
-            fprintf(fp, "encode_column_dyn SQL_C_CHAR \r\n");
+            fprintf(fp, "SQL_C_CHAR");
                 if binary_strings(state) {
                          ei_x_encode_binary(&dynamic_buffer(state),
                                             column.buffer,column.type.strlen_or_indptr);
@@ -1546,27 +1546,27 @@ static void encode_column_dyn(db_column column, int column_nr,
                 }
             break;
         case SQL_C_WCHAR:
-            fprintf(fp, "encode_column_dyn SQL_C_WCHAR \r\n");
+            fprintf(fp, "SQL_C_WCHAR");
             ei_x_encode_binary(&dynamic_buffer(state),
                                column.buffer,column.type.strlen_or_indptr);
             break;
         case SQL_C_SLONG:
-            fprintf(fp, "encode_column_dyn SQL_C_SLONG \r\n");
+            fprintf(fp, "SQL_C_SLONG");
             ei_x_encode_long(&dynamic_buffer(state),
                 *(SQLINTEGER*)column.buffer);
             break;
         case SQL_C_DOUBLE:
-            fprintf(fp, "encode_column_dyn SQL_C_DOUBLE \r\n");
+            fprintf(fp, "SQL_C_DOUBLE");
             ei_x_encode_double(&dynamic_buffer(state),
                                *(double*)column.buffer);
             break;
         case SQL_C_BIT:
-            fprintf(fp, "encode_column_dyn SQL_C_BIT \r\n");
+            fprintf(fp, "SQL_C_BIT");
             ei_x_encode_atom(&dynamic_buffer(state),
                              column.buffer[0]?"true":"false");
             break;
         case SQL_C_BINARY:
-            fprintf(fp, "encode_column_dyn SQL_C_BINARY \r\n");
+            fprintf(fp, "SQL_C_BINARY");
             column = retrive_binary_data(column, column_nr, state);
             if binary_strings(state) {
                     ei_x_encode_binary(&dynamic_buffer(state),
@@ -1576,12 +1576,12 @@ static void encode_column_dyn(db_column column, int column_nr,
             }
             break;
         default:
-            fprintf(fp, "encode_column_dyn error \r\n");
+            fprintf(fp, "error");
             ei_x_encode_atom(&dynamic_buffer(state), "error");
             break;
         }
     }
-    
+    fprintf(fp, "\n");
        fclose(fp);
 }
 
