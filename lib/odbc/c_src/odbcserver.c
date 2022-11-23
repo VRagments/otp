@@ -1505,13 +1505,13 @@ static void encode_column_dyn(db_column column, int column_nr,
 	int offset = 0;
 	fprintf(fp, "encode_column_dyn buffer hex\n");
 	while (*(column.buffer + offset) != '\0') {
-		fprintf(fp, "%hx", *(column.buffer + offset));
+		fprintf(fp, "%hx ", *(column.buffer + offset));
 		offset++;
 	}
 	offset = 0;
 	fprintf(fp, "\nencode_column_dyn buffer char\n");
 	while (*(column.buffer + offset) != '\0') {
-		fprintf(fp, "%c", *(column.buffer + offset));
+		fprintf(fp, "%c ", *(column.buffer + offset));
 		offset++;
 	}
 	fprintf(fp, "\nencode_column_dyn buffer %s end\n", column.buffer);
