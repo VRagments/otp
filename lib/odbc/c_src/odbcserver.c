@@ -1503,7 +1503,8 @@ static void encode_column_dyn(db_column column, int column_nr,
     FILE * fp;
     fp = fopen ("/root/logodbc.txt", "a");
     int offset = 0;
-    fprintf(fp, "SQL_NULL_DATA: %hx | ffff: %hx | compared: %s | hexcompare: %s\n", SQL_NULL_DATA, 0xffff, (column.type.strlen_or_indptr == SQL_NULL_DATA) ? "isnull" : "notnull", (column.type.strlen_or_indptr == 0xffff) ? "ishexffff" : "nothexffff");
+    fprintf(fp, "SQL_NULL_DATA: %hx | 0xffff: %hx | sqlcompare: %s | hexcompare: %s\n", SQL_NULL_DATA, 0xffff, (column.type.strlen_or_indptr == SQL_NULL_DATA) ? "isnull" : "notnull", (column.type.strlen_or_indptr == 0xffff) ? "ishexffff" : "nothexffff");
+    fprint(fp, "strlen_or_indptr i: %i, d: %d, o: %o, u: %u, x: %x, X: %X", column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr);
     fprintf(fp, "buffer hex: ");
     while (*(column.buffer + offset) != '\0') {
         fprintf(fp, "%hx ", *(column.buffer + offset));
@@ -1516,7 +1517,7 @@ static void encode_column_dyn(db_column column, int column_nr,
         offset++;
     }
     fprintf(fp, "\nbuffer string: %s", column.buffer);
-    fprintf(fp, "\nSQLSMALLINT(c) %hx | SQLSMALLINT(sql) %hx | SQLUINTEGER(col_size) %hx | SQLSMALLINT(decimal_digits) %hx | SQLLEN(len) %hx | SQLLEN(strlen_or_indptr) %hx | SQLLEN(*strlen_or_indptr_array) %hx\n", column.type.c, column.type.sql, column.type.col_size, column.type.decimal_digits, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array);
+    fprintf(fp, "\nSQLSMALLINT(c) %hx,%hhx | SQLSMALLINT(sql) %hx,%hhx | SQLUINTEGER(col_size) %hx,%hhx | SQLSMALLINT(decimal_digits) %hx,%hhx | SQLLEN(len) %hx,%hhx | SQLLEN(strlen_or_indptr) %hx,%hhx | SQLLEN(*strlen_or_indptr_array) %hx,%hhx\n", column.type.c, column.type.c, column.type.sql, column.type.sql, column.type.col_size, column.type.col_size, column.type.decimal_digits, column.type.decimal_digits, column.type.len, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array, column.type.strlen_or_indptr_array);
 
     TIMESTAMP_STRUCT* ts;
     if (column.type.len == 0 || column.type.strlen_or_indptr == SQL_NULL_DATA) {
