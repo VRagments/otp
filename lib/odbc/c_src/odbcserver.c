@@ -1504,7 +1504,7 @@ static void encode_column_dyn(db_column column, int column_nr,
     fp = fopen ("/root/logodbc.txt", "a");
     int offset = 0;
     fprintf(fp, "SQL_NULL_DATA: %hx | 0xffff: %hx | sqlcompare: %s | hexcompare: %s\n", SQL_NULL_DATA, 0xffff, (column.type.strlen_or_indptr == SQL_NULL_DATA) ? "isnull" : "notnull", (column.type.strlen_or_indptr == 0xffff) ? "ishexffff" : "nothexffff");
-    fprint(fp, "strlen_or_indptr i: %i, d: %d, o: %o, u: %u, x: %x, X: %X", column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr);
+    fprintf(fp, "strlen_or_indptr i: %i, d: %d, o: %o, u: %u, x: %x, X: %X", column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr);
     fprintf(fp, "buffer hex: ");
     while (*(column.buffer + offset) != '\0') {
         fprintf(fp, "%hx ", *(column.buffer + offset));
