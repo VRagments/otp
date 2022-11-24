@@ -1509,6 +1509,7 @@ static void encode_column_dyn(db_column column, int column_nr,
 		offset++;
 	}
 	offset = 0;
+	fprintf(fp, "SQL_NULL_DATA: %hx\n", SQL_NULL_DATA);
 	fprintf(fp, "\nbuffer char: ");
 	while (*(column.buffer + offset) != '\0') {
 		fprintf(fp, "%c ", *(column.buffer + offset));
