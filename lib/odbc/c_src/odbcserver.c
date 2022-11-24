@@ -1503,7 +1503,7 @@ static void encode_column_dyn(db_column column, int column_nr,
     FILE * fp;
     fp = fopen ("/root/logodbc.txt", "a");
     int offset = 0;
-    fprintf(fp, "SQL_NULL_DATA: %hx\n", SQL_NULL_DATA);
+    fprintf(fp, "SQL_NULL_DATA: %hx | compared: %s | hexcompare: %s\n", SQL_NULL_DATA, (column.type.strlen_or_indptr == SQL_NULL_DATA) ? "isnull" : "notnull", (column.type.strlen_or_indptr == 0xffff) ? "ishexffff" : "nothexffff");
     fprintf(fp, "buffer hex: ");
     while (*(column.buffer + offset) != '\0') {
         fprintf(fp, "%hx ", *(column.buffer + offset));
@@ -1540,16 +1540,14 @@ static void encode_column_dyn(db_column column, int column_nr,
         case SQL_C_CHAR:
             fprintf(fp, "SQL_C_CHAR");
                 if binary_strings(state) {
-                         ei_x_encode_binary(&dynamic_buffer(state),
-                                            column.buffer,column.type.strlen_or_indptr);
+                         ei_x_encode_binary(&dynamic_buffer(state), column.buffer,column.type.strlen_or_indptr);
                 } else {
                         ei_x_encode_string(&dynamic_buffer(state), column.buffer);
                 }
             break;
         case SQL_C_WCHAR:
             fprintf(fp, "SQL_C_WCHAR");
-            ei_x_encode_binary(&dynamic_buffer(state),
-                               column.buffer,column.type.strlen_or_indptr);
+            ei_x_encode_binary(&dynamic_buffer(state), column.buffer,column.type.strlen_or_indptr);
             break;
         case SQL_C_SLONG:
             if (column.type.strlen_or_indptr == 0xffff) {
