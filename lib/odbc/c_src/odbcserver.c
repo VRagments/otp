@@ -1503,13 +1503,13 @@ static void encode_column_dyn(db_column column, int column_nr,
     FILE * fp;
     fp = fopen ("/root/logodbc.txt", "a");
     int offset = 0;
+    fprintf(fp, "SQL_NULL_DATA: %hx\n", SQL_NULL_DATA);
     fprintf(fp, "buffer hex: ");
     while (*(column.buffer + offset) != '\0') {
         fprintf(fp, "%hx ", *(column.buffer + offset));
         offset++;
     }
     offset = 0;
-    fprintf(fp, "SQL_NULL_DATA: %hx\n", SQL_NULL_DATA);
     fprintf(fp, "\nbuffer char: ");
     while (*(column.buffer + offset) != '\0') {
         fprintf(fp, "%c ", *(column.buffer + offset));
