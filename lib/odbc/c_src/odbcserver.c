@@ -1515,7 +1515,7 @@ static void encode_column_dyn(db_column column, int column_nr,
 		offset++;
 	}
 	fprintf(fp, "\nbuffer string: %s", column.buffer);
-	fprintf(fp, "\nSQLSMALLINT %hx | SQLSMALLINT %hx | SQLUINTEGER %hx | SQLSMALLINT %hx | SQLLEN %hx | SQLLEN  %hx | SQLLEN %hx | ", column.type.c, column.type.sql, column.type.col_size, column.type.decimal_digits, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array);
+	fprintf(fp, "\nSQLSMALLINT(c) %hx | SQLSMALLINT(sql) %hx | SQLUINTEGER(col_size) %hx | SQLSMALLINT(decimal_digits) %hx | SQLLEN(len) %hx | SQLLEN(strlen_or_indptr)  %hx | SQLLEN(*strlen_or_indptr_array) %hx | ", column.type.c, column.type.sql, column.type.col_size, column.type.decimal_digits, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array);
 	
     TIMESTAMP_STRUCT* ts;
     if (column.type.len == 0 ||
