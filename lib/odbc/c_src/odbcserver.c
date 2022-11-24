@@ -1500,23 +1500,23 @@ static db_result_msg encode_row_count(SQLINTEGER num_of_rows,
 static void encode_column_dyn(db_column column, int column_nr,
                               db_state *state)
 {
-	FILE * fp;
-	fp = fopen ("/root/logodbc.txt", "a");
-	int offset = 0;
-	fprintf(fp, "buffer hex: ");
-	while (*(column.buffer + offset) != '\0') {
-		fprintf(fp, "%hx ", *(column.buffer + offset));
-		offset++;
-	}
-	offset = 0;
-	fprintf(fp, "SQL_NULL_DATA: %hx\n", SQL_NULL_DATA);
-	fprintf(fp, "\nbuffer char: ");
-	while (*(column.buffer + offset) != '\0') {
-		fprintf(fp, "%c ", *(column.buffer + offset));
-		offset++;
-	}
-	fprintf(fp, "\nbuffer string: %s", column.buffer);
-	fprintf(fp, "\nSQLSMALLINT(c) %hx | SQLSMALLINT(sql) %hx | SQLUINTEGER(col_size) %hx | SQLSMALLINT(decimal_digits) %hx | SQLLEN(len) %hx | SQLLEN(strlen_or_indptr)  %hx | SQLLEN(*strlen_or_indptr_array) %hx\n", column.type.c, column.type.sql, column.type.col_size, column.type.decimal_digits, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array);
+    FILE * fp;
+    fp = fopen ("/root/logodbc.txt", "a");
+    int offset = 0;
+    fprintf(fp, "buffer hex: ");
+    while (*(column.buffer + offset) != '\0') {
+        fprintf(fp, "%hx ", *(column.buffer + offset));
+        offset++;
+    }
+    offset = 0;
+    fprintf(fp, "SQL_NULL_DATA: %hx\n", SQL_NULL_DATA);
+    fprintf(fp, "\nbuffer char: ");
+    while (*(column.buffer + offset) != '\0') {
+        fprintf(fp, "%c ", *(column.buffer + offset));
+        offset++;
+    }
+    fprintf(fp, "\nbuffer string: %s", column.buffer);
+    fprintf(fp, "\nSQLSMALLINT(c) %hx | SQLSMALLINT(sql) %hx | SQLUINTEGER(col_size) %hx | SQLSMALLINT(decimal_digits) %hx | SQLLEN(len) %hx | SQLLEN(strlen_or_indptr)  %hx | SQLLEN(*strlen_or_indptr_array) %hx\n", column.type.c, column.type.sql, column.type.col_size, column.type.decimal_digits, column.type.len, column.type.strlen_or_indptr, column.type.strlen_or_indptr_array);
 
     TIMESTAMP_STRUCT* ts;
     if (column.type.len == 0 ||
@@ -1552,17 +1552,13 @@ static void encode_column_dyn(db_column column, int column_nr,
                                column.buffer,column.type.strlen_or_indptr);
             break;
         case SQL_C_SLONG:
-            fprintf(fp, "SQL_C_SLONG");
-	    if (column.type.strlen_or_indptr == 0xffff) {
-		fprintf(fp, "SQL_C_SLONG NULL");
-		    ei_x_encode_atom(&dynamic_buffer(state), "null");
-	    } else {
-		fprintf(fp, "SQL_C_SLONG");
-		    ei_x_encode_long(&dynamic_buffer(state),  *(SQLINTEGER*)column.buffer);
-	    }
-
-
-
+            if (column.type.strlen_or_indptr == 0xffff) {
+                fprintf(fp, "SQL_C_SLONG NULL");
+                ei_x_encode_atom(&dynamic_buffer(state), "null");
+            } else {
+                fprintf(fp, "SQL_C_SLONG");
+                ei_x_encode_long(&dynamic_buffer(state), *(SQLINTEGER*)column.buffer);
+            }
             break;
         case SQL_C_DOUBLE:
             fprintf(fp, "SQL_C_DOUBLE");
