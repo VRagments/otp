@@ -1503,8 +1503,8 @@ static void encode_column_dyn(db_column column, int column_nr,
     FILE * fp;
     fp = fopen ("/root/logodbc.txt", "a");
     int offset = 0;
-    fprintf(fp, "SQL_NULL_DATA: %x, %hx | sqlcompare: %s | hexcompare: %s\n", SQL_NULL_DATA, SQL_NULL_DATA, (column.type.strlen_or_indptr == SQL_NULL_DATA) ? "isnull" : "notnull", (column.type.strlen_or_indptr == 0xffffffff) ? "ishexffff" : "nothexffff");
-    fprintf(fp, "strlen_or_indptr i: %i, d: %d, o: %o, u: %u, x: %x, X: %X\n", column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr);
+    fprintf(fp, "SQL_NULL_DATA: %llx, %lx, %x, %hx | sqlcompare: %s | hexcompare: %s\n", SQL_NULL_DATA, SQL_NULL_DATA, SQL_NULL_DATA, SQL_NULL_DATA, (column.type.strlen_or_indptr == SQL_NULL_DATA) ? "isnull" : "notnull", (column.type.strlen_or_indptr == 0xffffffff) ? "ishexffff" : "nothexffff");
+    fprintf(fp, "strlen_or_indptr i: %i, d: %d, o: %o, u: %u, x: %x, lx: %lx, llx: %llx, X: %X\n", column.type.strlen_or_indptr,column.type.strlen_or_indptr,  column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr, column.type.strlen_or_indptr);
     fprintf(fp, "buffer hex: ");
     while (*(column.buffer + offset) != '\0') {
         fprintf(fp, "%hx ", *(column.buffer + offset));
